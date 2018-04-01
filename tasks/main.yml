@@ -18,7 +18,7 @@
     register: check_mysql_setup
 
   - include_tasks: "{{ ansible_distribution }}-setup.yml"
-    when: check_mysql_setup.stat.exists == true and (ansible_distribution == "Ubuntu" or ansible_distribution == "CentOS")
+    when: check_mysql_setup.stat.exists == false and (ansible_distribution == "Ubuntu" or ansible_distribution == "CentOS")
 
   - name: create /etc/ansible_setup_mysqld
     file:
