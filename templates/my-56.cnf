@@ -1,4 +1,3 @@
-# TheQwan Version - ubuntu
 
 [client]
 default-character-set = {{ default_character_set_56 }}

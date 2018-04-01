@@ -41,5 +41,5 @@
     owner: root
     mode: 0644
   become: yes
-  notify: restart mysql
+  notify: systemctl restart mysql
   when: ansible_distribution_version == "16.04"
