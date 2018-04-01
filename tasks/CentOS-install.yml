@@ -17,7 +17,7 @@
 - name: "yum-config-manager --enable mysql-community"
   command: "yum-config-manager --enable mysql{{ default_mysql_version }}-community"
   args:
-    creates: /etc/ansible_installed_centos_mysqld
+    creates: /etc/ansible_installed_mysqld
   register: yum_config_manager
 
 - name: install mysql-server
@@ -26,8 +26,8 @@
     state: present
     update_cache: yes
 
-- name: create /etc/ansible_installed_centos_mysqld
+- name: create /etc/ansible_installed_mysqld
   file:
-    path: /etc/ansible_installed_centos_mysqld
+    path: /etc/ansible_installed_mysqld
     state: touch
   when: yum_config_manager.changed
