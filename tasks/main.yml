@@ -21,7 +21,7 @@
     when: check_mysql_setup.stat.exists == false and (ansible_distribution == "Ubuntu" or ansible_distribution == "CentOS")
 
   - name: create /etc/ansible_setup_mysqld
-    file:
-      path: /etc/ansible_setup_mysqld
-      state: touch
+    command: touch /etc/ansible_setup_mysqld
+    args:
+      creates: /etc/ansible_setup_mysqld
   tags: setup
