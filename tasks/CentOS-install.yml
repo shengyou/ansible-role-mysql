@@ -1,0 +1,33 @@
+
+
+- name: install epel-release (CentOS)
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - epel-release
+    - yum-utils
+
+- name: install remi-release rpm
+  yum:
+    name: "https://dev.mysql.com/get/mysql57-community-release-el{{ ansible_distribution_major_version }}-11.noarch.rpm"
+    state: present
+
+- name: "yum-config-manager --enable mysql-community"
+  command: "yum-config-manager --enable mysql{{ default_mysql_version }}-community"
+  args:
+    creates: /etc/ansible_installed_centos_mysqld
+  register: yum_config_manager
+
+- name: install mysql-server
+  yum:
+    name: mysql-server
+    state: present
+    update_cache: yes
+
+- name: create /etc/ansible_installed_centos_mysqld
+  file:
+    path: /etc/ansible_installed_centos_mysqld
+    state: touch
+  when: yum_config_manager.changed

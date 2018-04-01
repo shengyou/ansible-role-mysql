@@ -1,0 +1,17 @@
+---
+
+- name: Install MySQLdb Python package for CentOS.
+  yum: name=MySQL-python state=present
+  when: ansible_distribution == "CentOS"
+
+- name: Install python-mysqldb package for Ubuntu
+  apt: name=python-mysqldb state=present update_cache=yes
+  when: ansible_distribution == "Ubuntu"
+
+- include_tasks: "{{ ansible_distribution }}-install.yml"
+  when: ansible_distribution == "Ubuntu" or ansible_distribution == "CentOS"
+  tags: install
+
+- include_tasks: "{{ ansible_distribution }}-setup.yml"
+  when: ansible_distribution == "Ubuntu" or ansible_distribution == "CentOS"
+  tags: setup

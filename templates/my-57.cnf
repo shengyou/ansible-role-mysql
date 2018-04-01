@@ -1,0 +1,95 @@
+# TheQwan Version - ubuntu
+
+[client]
+default-character-set = {{ default_character_set_57 }}
+port                  = {{ mysql_port }}
+socket                = /var/run/mysqld/mysqld.sock
+
+[mysqld_safe]
+socket                = /var/run/mysqld/mysqld.sock
+nice                  = 0
+
+[mysql]
+default-character-set = {{ default_character_set_57 }}
+
+[mysqld]
+#
+# * Basic Settings
+#
+
+#bind-address   = 127.0.0.1
+user                 = mysql
+pid-file             = /var/run/mysqld/mysqld.pid
+socket               = /var/run/mysqld/mysqld.sock
+port                 = 3306
+datadir              = /var/lib/mysql
+
+collation-server     = {{ collation_server_57 }}
+init-connect         = {{ init_connect_57 }}
+character-set-server = {{ default_character_set_57 }}
+
+
+skip-host-cache
+skip-name-resolve
+secure-file-priv     = /var/lib/mysql-files
+symbolic-links       = 0
+
+
+#
+# * ubuntu
+#
+myisam-recover-options  = BACKUP
+basedir              = /usr
+tmpdir               = /tmp
+lc-messages-dir      = /usr/share/mysql
+skip-external-locking
+
+
+#
+# * Fine Tuning
+#
+key_buffer_size      = 16M
+max_allowed_packet   = 16M
+thread_stack         = 192K
+thread_cache_size    = 8
+
+#max_connections     = 100
+#table_cache         = 64
+#thread_concurrency  = 10
+
+#
+# * Query Cache Configuration
+#
+query_cache_limit    = 1M
+query_cache_size     = 16M
+
+#
+# * Log
+#
+#general_log_file    = /var/log/mysql.log
+#general_log         = 1
+log_error            = /var/log/mysql-error.log
+
+slow_query_log       = on
+slow-query-log-file  = /var/log/mysql-slow.log
+long_query_time      = 2
+#log-queries-not-using-indexes
+
+expire_logs_days     = 10
+max_binlog_size      = 100M
+
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet   = 16M
+
+[isamchk]
+key_buffer           = 16M
+
+{% if ansible_distribution == "Ubuntu" %}
+!includedir /etc/mysql/conf.d/
+
+{% elif ansible_distribution == "CentOS" %}
+!includedir /etc/my.cnf.d
+{% endif %}

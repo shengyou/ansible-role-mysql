@@ -1,0 +1,45 @@
+- name: start mysql
+  service:
+    name: mysql
+    state: restarted
+
+- name: Get host_name
+  setup: filter=ansible_hostname
+  register: get_ansible_facts
+
+- name: Update MySQL root passwd
+  mysql_user: name=root host={{ item }} password={{ mysql_password }}
+  with_items:
+    - "{{ get_ansible_facts.ansible_facts.ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+  no_log: True
+
+- name: remove the MySQL test database
+  mysql_db: name=test state=absent login_user=root login_password={{ mysql_password }}
+  no_log: True
+
+- name: Copy 5.5 my.cnf
+  template:
+    src: my-55.cnf
+    backup: yes
+    dest: /etc/mysql/my.cnf
+    group: root
+    owner: root
+    mode: 0644
+  become: yes
+  notify: restart mysql
+  when: ansible_distribution_version == "14.04"
+
+- name: Copy 5.7 my.cnf
+  template:
+    src: my-57.cnf
+    backup: yes
+    dest: /etc/mysql/my.cnf
+    group: root
+    owner: root
+    mode: 0644
+  become: yes
+  notify: restart mysql
+  when: ansible_distribution_version == "16.04"
