@@ -1,7 +1,12 @@
 - name: start mysql
+  command: service mysql restart
+  when: ansible_virtualization_type == "docker"
+
+- name: start mysql
   service:
     name: mysql
     state: restarted
+  when: ansible_virtualization_type != "docker"
 
 - name: Get host_name
   setup: filter=ansible_hostname

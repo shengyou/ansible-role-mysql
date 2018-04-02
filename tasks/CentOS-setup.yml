@@ -7,14 +7,27 @@
   setup: filter=ansible_hostname
   register: get_ansible_facts
 
-- shell: "cat /var/log/mysqld.log | grep 'temporary password' | grep -oP ': .+' | grep -oP ' .+' | xargs"
-  register: temp_passwd
-  no_log: True
+- block:
+  - name: Get MySQL root temp password (5.7.x).
+    shell: "cat /var/log/mysqld.log | grep 'temporary password' | grep -oP ': .+' | grep -oP ' .+' | xargs"
+    register: temp_passwd
+    no_log: True
 
-- name: Update MySQL root password for localhost root account (5.7.x).
-  shell: >
-    mysql -u root --connect-expired-password --password="{{ temp_passwd.stdout }}" -NBe 'ALTER USER "root"@"localhost" IDENTIFIED WITH mysql_native_password BY "{{ mysql_password }}";'
+  - name: Update MySQL root password for localhost root account (5.7.x).
+    shell: >
+      mysql -u root --connect-expired-password --password="{{ temp_passwd.stdout }}" -NBe 'ALTER USER "root"@"localhost" IDENTIFIED WITH mysql_native_password BY "{{ mysql_password }}";'
+    no_log: True
+  when: default_mysql_version == 57
+
+- name: Update MySQL root passwd
+  mysql_user: name=root host={{ item }} password={{ mysql_password }}
+  with_items:
+    - "{{ get_ansible_facts.ansible_facts.ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
   no_log: True
+  when: default_mysql_version == 56 or default_mysql_version == 55
 
 - name: remove the MySQL test database
   mysql_db: name=test state=absent login_user=root login_password={{ mysql_password }}
