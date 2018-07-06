@@ -88,6 +88,7 @@ key_buffer           = 16M
 
 {% if ansible_distribution == "Ubuntu" %}
 !includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mysql.conf.d/
 
 {% elif ansible_distribution == "CentOS" %}
 !includedir /etc/my.cnf.d
