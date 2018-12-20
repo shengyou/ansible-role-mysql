@@ -2,11 +2,13 @@
   service:
     name: mysqld
     state: restarted
+  when: ansible_virtualization_type != "docker"
 
 - name: restart mysql
   service:
     name: mysql
     state: restarted
+  when: ansible_virtualization_type != "docker"
 
 - name: systemctl restart mysql
   systemd:

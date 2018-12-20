@@ -25,6 +25,16 @@
   mysql_db: name=test state=absent login_user=root login_password={{ mysql_password }}
   no_log: True
 
+- name: stop mysql
+  command: service mysql stop
+  when: ansible_virtualization_type == "docker"
+
+- name: stop mysql
+  service:
+    name: mysql
+    state: stopped
+  when: ansible_virtualization_type != "docker"
+
 - name: Copy 5.5 my.cnf
   template:
     src: my-55.cnf

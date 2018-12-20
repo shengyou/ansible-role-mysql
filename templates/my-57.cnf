@@ -65,12 +65,12 @@ query_cache_size     = 16M
 #
 # * Log
 #
-#general_log_file    = /var/log/mysql.log
+#general_log_file    = /var/log/mysql/mysql.log
 #general_log         = 1
-log_error            = /var/log/mysql-error.log
+log_error            = /var/log/mysql/error.log
 
 slow_query_log       = on
-slow-query-log-file  = /var/log/mysql-slow.log
+slow-query-log-file  = /var/log/mysql/mysql-slow.log
 long_query_time      = 2
 #log-queries-not-using-indexes
 
@@ -88,8 +88,6 @@ key_buffer           = 16M
 
 {% if ansible_distribution == "Ubuntu" %}
 !includedir /etc/mysql/conf.d/
-!includedir /etc/mysql/mysql.conf.d/
-
 {% elif ansible_distribution == "CentOS" %}
 !includedir /etc/my.cnf.d
 {% endif %}
