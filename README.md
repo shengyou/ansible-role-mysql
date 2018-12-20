@@ -10,7 +10,7 @@
 
 Ubuntu 14.04 將會安裝 mysql 5.5
 
-Ubuntu 14.04 將會安裝 mysql 5.7
+Ubuntu 16.04 將會安裝 mysql 5.7
 
 CentOS 則會根據 variable: default_mysql_version 來決定安裝哪一個版本。
 
