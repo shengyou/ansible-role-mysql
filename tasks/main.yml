@@ -22,6 +22,6 @@
 
   - name: create /etc/ansible_setup_mysqld
     file: path=/etc/ansible_setup_mysqld state=touch
-    when: mysql_setup.changed
+    when: check_mysql_setup.stat.exists == false and (ansible_distribution == "Ubuntu" or ansible_distribution == "CentOS")
 
   tags: setup

@@ -46,7 +46,6 @@
   become: yes
   notify: restart mysql
   when: ansible_distribution_version == "14.04"
-  register: mysql_setup
 
 - name: Copy 5.7 my.cnf
   template:
@@ -59,4 +58,3 @@
   become: yes
   notify: systemctl restart mysql
   when: ansible_distribution_version == "16.04"
-  register: mysql_setup
