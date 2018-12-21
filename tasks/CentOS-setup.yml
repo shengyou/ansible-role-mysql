@@ -43,3 +43,4 @@
     mode: 0644
   become: yes
   notify: restart mysqld
+  register: mysql_setup

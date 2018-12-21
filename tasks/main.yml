@@ -22,5 +22,6 @@
 
   - name: create /etc/ansible_setup_mysqld
     file: path=/etc/ansible_setup_mysqld state=touch
+    when: mysql_setup.changed
 
   tags: setup
