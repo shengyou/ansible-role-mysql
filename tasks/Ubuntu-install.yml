@@ -1,4 +1,4 @@
 ---
 
 - name: Ensure MySQL packages are installed.
-  apt: "name=mysql-server state=installed"
+  apt: "name=mysql-server state=present"
