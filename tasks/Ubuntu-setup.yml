@@ -57,4 +57,37 @@
     mode: 0644
   become: yes
   notify: systemctl restart mysql
-  when: ansible_distribution_version == "16.04"
+  when: ansible_distribution_version == "16.04" or ansible_distribution_version == "18.04"
+
+- name: setup custom my.cnf
+  copy:
+    src: "{{ custom_my_cnf }}"
+    backup: yes
+    dest: /etc/mysql/my.cnf
+    group: root
+    owner: root
+    mode: 0644
+  become: yes
+  notify: systemctl restart mysql
+  when: custom_my_cnf is defined
+
+- name: Create /etc/systemd/system/mysql.service.d
+  file:
+    path: "/etc/systemd/system/mysql.service.d"
+    state: directory
+    group: root
+    owner: root
+
+- name: setup /etc/systemd/system/mysql.service.d/override.conf
+  template:
+    src: override.conf
+    dest: /etc/systemd/system/mysql.service.d/override.conf
+    group: root
+    owner: root
+    mode: 0644
+  become: yes
+  notify: systemctl restart mysql
+
+- name: systemctl daemon-reload
+  command: systemctl daemon-reload
+  become: yes

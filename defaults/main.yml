@@ -17,3 +17,6 @@ init_connect_56: "'SET NAMES utf8'"
 default_character_set_55: "utf8"
 collation_server_55: "utf8_general_ci"
 init_connect_55: "'SET NAMES utf8'"
+
+LimitNOFILE: 4510
+LimitMEMLOCK: 4510

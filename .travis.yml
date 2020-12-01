@@ -8,6 +8,7 @@ env:
   - distro: centos7
   - distro: ubuntu1404
   - distro: ubuntu1604
+  - distro: ubuntu1804
 
 
 script:

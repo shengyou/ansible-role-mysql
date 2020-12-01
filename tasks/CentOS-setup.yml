@@ -43,3 +43,15 @@
     mode: 0644
   become: yes
   notify: restart mysqld
+
+- name: setup custom my.cnf
+  copy:
+    src: "{{ custom_my_cnf }}"
+    backup: yes
+    dest: /etc/my.cnf
+    group: root
+    owner: root
+    mode: 0644
+  become: yes
+  notify: restart mysqld
+  when: custom_my_cnf is defined

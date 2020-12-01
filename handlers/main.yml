@@ -14,4 +14,5 @@
   systemd:
     name: mysql
     state: restarted
+    daemon_reload: yes
   when: ansible_virtualization_type != "docker"

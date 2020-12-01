@@ -44,6 +44,16 @@ collation_server_55: "utf8_general_ci"
 init_connect_55: "'SET NAMES utf8'"
 ```
 
+Ubuntu 專用的 Variables，因為要將 ulimit 開大才能調高 MySQL 的 max_connections
+```
+LimitNOFILE: 4510
+LimitMEMLOCK: 4510
+```
+
+用來設置自訂的 my.cnf，請輸入 source 檔案的路徑。
+```
+custom_my_cnf:
+```
 
 Example Playbook
 ----------------
@@ -57,6 +67,7 @@ Example Playbook
   vars:
     mysql_password: "1234567890$"
     mysql_port: 33060
+    custom_my_cnf: "path/to/file"
 
   roles:
     - ansible-role-mysql
